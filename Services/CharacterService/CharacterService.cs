@@ -9,6 +9,7 @@ using Rpg_project.Dtos.AddCharacterDtos;
 using AutoMapper;
 using Rpg_project.Dtos;
 using Rpg_project.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Rpg_project.Sevices.CharacterService
 {
@@ -20,27 +21,23 @@ namespace Rpg_project.Sevices.CharacterService
         private readonly IMapper _mapper;
         public DataContext _context { get; }
 
-        public CharacterService(IMapper mapper,DataContext context)
+        public CharacterService(IMapper mapper, DataContext context)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        private readonly List<Characters> characters = new List<Characters>{
-
-            new Characters(),
-            new Characters{Id=1,Name = "adesh"}
-        };
-
 
         public async Task<ServiceResponse<List<GetCharacterDTO>>> AddCharacter(AddCharacterDTO new_character)
         {
             Characters character = _mapper.Map<Characters>(new_character);
-            character.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(character);
+
+            _context.Characters.Add(character);
+
+            await _context.SaveChangesAsync();
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
+            serviceResponse.Data = await _context.Characters.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToListAsync();
             return serviceResponse;
         }
 
@@ -50,9 +47,9 @@ namespace Rpg_project.Sevices.CharacterService
         {
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            var result = characters.Select(s => _mapper.Map<GetCharacterDTO>(s)).ToList();
+            var result = await _context.Characters.ToListAsync();
 
-            serviceResponse.Data = result;
+            serviceResponse.Data = result.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
             return serviceResponse;
 
         }
@@ -63,7 +60,7 @@ namespace Rpg_project.Sevices.CharacterService
         {
             var serviceResponse = new ServiceResponse<GetCharacterDTO>();
 
-            var result = characters.FirstOrDefault(x => x.Name == name);
+            var result = await _context.Characters.FirstOrDefaultAsync(x => x.Name == name);
 
             if (result == null)
             {
@@ -84,14 +81,16 @@ namespace Rpg_project.Sevices.CharacterService
             try
             {
 
-                var result = characters.FirstOrDefault(x => x.Id == character.Id);
+                var result = await _context.Characters.FirstOrDefaultAsync(x => x.Id == character.Id);
 
                 if (!String.IsNullOrEmpty(character.Name)) result.Name = character.Name;
                 if (!String.IsNullOrEmpty((character.Class).ToString())) result.Class = character.Class;
                 if (character.Skills != null) result.Skills = character.Skills;
                 if (character.Defence != null) result.Defence = character.Defence;
 
-                serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToList();
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = await _context.Characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToListAsync();
                 return serviceResponse;
             }
             catch (Exception ex)
@@ -108,10 +107,10 @@ namespace Rpg_project.Sevices.CharacterService
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
             try
             {
-                var result = characters.FirstOrDefault(x => x.Id == id);
+                Characters character = await _context.Characters.FirstOrDefaultAsync(x => x.Id == id);
 
 
-                if (result == null)
+                if (character == null)
                 {
 
                     serviceResponse.Success = false;
@@ -119,9 +118,11 @@ namespace Rpg_project.Sevices.CharacterService
 
                     return serviceResponse;
                 }
-                characters.Remove(result);
+                _context.Characters.Remove(character);
 
-                serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToList();
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Data = await _context.Characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToListAsync();
                 return serviceResponse;
 
             }
