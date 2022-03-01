@@ -72,6 +72,18 @@ namespace Rpg_project.Controllers
 
         }
 
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDTO>>>> DeleteCharacter(int id)
+        {
+
+            var response = await _characterService.DeleteCharacter(id);
+
+            if (response.Data == null) return BadRequest(response);
+
+            return Ok(response);
+
+        }
+
     }
 
 

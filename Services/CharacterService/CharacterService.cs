@@ -8,6 +8,7 @@ using Rpg_project.Dtos.GetCharacterDTO;
 using Rpg_project.Dtos.AddCharacterDtos;
 using AutoMapper;
 using Rpg_project.Dtos;
+using Rpg_project.Data;
 
 namespace Rpg_project.Sevices.CharacterService
 {
@@ -17,9 +18,11 @@ namespace Rpg_project.Sevices.CharacterService
     {
 
         private readonly IMapper _mapper;
+        public DataContext _context { get; }
 
-        public CharacterService(IMapper mapper)
+        public CharacterService(IMapper mapper,DataContext context)
         {
+            _context = context;
             _mapper = mapper;
         }
 
@@ -41,22 +44,37 @@ namespace Rpg_project.Sevices.CharacterService
             return serviceResponse;
         }
 
+
+
         public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll()
         {
+
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToList();
+            var result = characters.Select(s => _mapper.Map<GetCharacterDTO>(s)).ToList();
+
+            serviceResponse.Data = result;
             return serviceResponse;
+
         }
+
+
 
         public async Task<ServiceResponse<GetCharacterDTO>> GetSingle(string name)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDTO>();
-            var result = _mapper.Map<GetCharacterDTO>(characters.FirstOrDefault(x => x.Name == name));  // firstordefault does not throw exception, upon not finding the result.
 
-            if (result == null) throw new InvalidOperationException("Not Found");
+            var result = characters.FirstOrDefault(x => x.Name == name);
 
-            serviceResponse.Data = result;
+            if (result == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Not Found";
+            }
+
+            serviceResponse.Data = _mapper.Map<GetCharacterDTO>(result);
+
             return serviceResponse;
+
         }
 
         public async Task<ServiceResponse<List<GetCharacterDTO>>> UpdateCharacter(UpdateCharacterDTO character)
@@ -82,6 +100,39 @@ namespace Rpg_project.Sevices.CharacterService
                 serviceResponse.Message = ex.Message;
                 return serviceResponse;
             }
+
+        }
+
+        public async Task<ServiceResponse<List<GetCharacterDTO>>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
+            try
+            {
+                var result = characters.FirstOrDefault(x => x.Id == id);
+
+
+                if (result == null)
+                {
+
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid ID";
+
+                    return serviceResponse;
+                }
+                characters.Remove(result);
+
+                serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDTO>(x)).ToList();
+                return serviceResponse;
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                return serviceResponse;
+            }
+
+
 
         }
     }

@@ -21,6 +21,8 @@ namespace Rpg_project.Sevices.CharacterService
 
         Task<ServiceResponse<List<GetCharacterDTO>>> UpdateCharacter(UpdateCharacterDTO character);
 
+        Task <ServiceResponse<List<GetCharacterDTO>>> DeleteCharacter (int id);
+
     }
 
 
