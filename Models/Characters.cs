@@ -16,6 +16,7 @@ namespace Rpg_project.Models
 
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
+        public Users User { get; set; }
 
     }
 

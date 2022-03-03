@@ -16,5 +16,7 @@ namespace Rpg_project.Data
 
         public DbSet<Characters> Characters { get; set; }
 
+        public DbSet<Users> Users {get; set;}
+
     }
 }
