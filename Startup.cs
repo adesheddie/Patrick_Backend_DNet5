@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Rpg_project.Data;
+using Rpg_project.Services.AuthService;
 using Rpg_project.Sevices.CharacterService;
 
 namespace Rpg_project
@@ -32,7 +33,7 @@ namespace Rpg_project
 
             services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -41,6 +42,7 @@ namespace Rpg_project
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ICharacterService, CharacterService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

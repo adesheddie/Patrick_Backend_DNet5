@@ -20,7 +20,7 @@ namespace Rpg_project.Services.AuthService
         }
         public async Task<bool> CheckIfExists(string email)
         {
-            if (await _context.Users.AnyAsync(x => x.Email.ToLower() == email.ToLower()))
+            if (await _context.Users.AnyAsync(x => x.Email.ToLower().Equals(email.ToLower())))
             {
                 return true;
             }
