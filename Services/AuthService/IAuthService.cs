@@ -11,7 +11,7 @@ namespace Rpg_project.Services.AuthService
         
         public Task<ServiceResponse<int>> Register (string email,string password);
 
-        public Task <ServiceResponse<bool>> Login (string email,string password);
+        public Task <ServiceResponse<string>> Login (string email,string password);
 
         public Task <bool> CheckIfExists (string email);
     }

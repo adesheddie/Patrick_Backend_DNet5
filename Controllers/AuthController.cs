@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Rpg_project.Dtos.AddUserDto;
@@ -12,6 +10,8 @@ using Rpg_project.Services.AuthService;
 
 namespace Rpg_project.Controllers
 {
+
+  
     [Route("[controller]")]
     public class AuthController : Controller
     {

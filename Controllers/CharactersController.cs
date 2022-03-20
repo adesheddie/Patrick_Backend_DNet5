@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using Rpg_project.Dtos.AddCharacterDtos;
 using Rpg_project.Dtos.GetCharacterDTO;
 using Rpg_project.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rpg_project.Controllers
 {
 
-
+  [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CharacterController : ControllerBase
