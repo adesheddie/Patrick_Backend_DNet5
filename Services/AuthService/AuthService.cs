@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,34 @@ namespace Rpg_project.Services.AuthService
             }
         }
 
-        public Task<ServiceResponse<Users>> Login(string email, string password)
+
+
+        public async Task<ServiceResponse<bool>> Login(string email, string password)
         {
-            throw new NotImplementedException();
+
+            var serviceResponse = new ServiceResponse<bool>();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Invalid Email";
+                return serviceResponse;
+            }
+
+            if (VerifyPassword(password, user.PasswordHash, user.PasswordSalt) == false)
+            {
+
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Invalid Password";
+                return serviceResponse;
+            }
+
+            serviceResponse.Message = "Logged In Successfully!";
+            serviceResponse.Data = true;
+            return serviceResponse;
+
+
         }
 
         public async Task<ServiceResponse<int>> Register(string email, string password)
@@ -83,6 +109,27 @@ namespace Rpg_project.Services.AuthService
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+
+        }
+
+        private bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+
+                }
+                return true;
             }
 
         }
