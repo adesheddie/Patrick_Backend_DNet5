@@ -13,7 +13,7 @@ namespace Rpg_project.Sevices.CharacterService
     {
 
 
-        Task<ServiceResponse<List<GetCharacterDTO>>> GetAll();
+        Task<ServiceResponse<List<GetCharacterDTO>>> GetAll(int userId);
 
         Task<ServiceResponse<GetCharacterDTO>> GetSingle(string name);
 

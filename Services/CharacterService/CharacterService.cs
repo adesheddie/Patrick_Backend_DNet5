@@ -43,11 +43,11 @@ namespace Rpg_project.Sevices.CharacterService
 
 
 
-        public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll()
+        public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll(int userId)
         {
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            var result = await _context.Characters.ToListAsync();
+            var result = await _context.Characters.Where(c=> c.User.Id == userId).ToListAsync();
 
             serviceResponse.Data = result.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
             return serviceResponse;

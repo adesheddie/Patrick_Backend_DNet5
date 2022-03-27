@@ -41,6 +41,7 @@ namespace Rpg_project
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rpg_project", Version = "v1" });
+                // below line is to add input box for token in swagger
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Description = "Standard Authorization header using the Bearer scheme. Example \"Bearer {token}\"",

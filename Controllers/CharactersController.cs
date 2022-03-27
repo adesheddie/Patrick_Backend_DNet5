@@ -10,11 +10,13 @@ using Rpg_project.Dtos.AddCharacterDtos;
 using Rpg_project.Dtos.GetCharacterDTO;
 using Rpg_project.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Rpg_project.Controllers
 {
 
-  [Authorize]
+    // below will add authorization in all APIs (  [Authorize]  )
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CharacterController : ControllerBase
@@ -29,15 +31,17 @@ namespace Rpg_project.Controllers
         }
 
 
+
         [HttpGet]
         //  [HttpGet("GetAll")] // we can use this to customize the endpoint
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDTO>>>> Get()
         {
-
-            return Ok(await _characterService.GetAll());
+            // Note : extract ID from token via claims, here the User is derived from baseController.
+            var id = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            return Ok(await _characterService.GetAll(id));
 
         }
-
+        [AllowAnonymous] // allowing particular API without token
         [HttpGet("{name}")]  // we specify the route param
 
 
