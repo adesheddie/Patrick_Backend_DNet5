@@ -33,17 +33,21 @@ namespace Rpg_project.Sevices.CharacterService
         }
 
 
-        public int geUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+        public int getUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         public async Task<ServiceResponse<List<GetCharacterDTO>>> AddCharacter(AddCharacterDTO new_character)
         {
             Characters character = _mapper.Map<Characters>(new_character);
+
+            character.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == getUserId());
 
             _context.Characters.Add(character);
 
             await _context.SaveChangesAsync();
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            serviceResponse.Data = await _context.Characters.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToListAsync();
+            serviceResponse.Data = await _context.Characters.
+            Where(w => w.User.Id == getUserId())
+            .Select(c => _mapper.Map<GetCharacterDTO>(c)).ToListAsync();
             return serviceResponse;
         }
 
@@ -53,7 +57,7 @@ namespace Rpg_project.Sevices.CharacterService
         {
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            var result = await _context.Characters.Where(c => c.User.Id == this.geUserId()).ToListAsync();
+            var result = await _context.Characters.Where(c => c.User.Id == getUserId()).ToListAsync();
 
             serviceResponse.Data = result.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
             return serviceResponse;
@@ -62,11 +66,11 @@ namespace Rpg_project.Sevices.CharacterService
 
 
 
-        public async Task<ServiceResponse<GetCharacterDTO>> GetSingle(string name)
+        public async Task<ServiceResponse<GetCharacterDTO>> GetSingle(int id)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDTO>();
 
-            var result = await _context.Characters.FirstOrDefaultAsync(x => x.Name == name);
+            var result = await _context.Characters.FirstOrDefaultAsync(x => x.Id == id && x.User.Id == getUserId());
 
             if (result == null)
             {

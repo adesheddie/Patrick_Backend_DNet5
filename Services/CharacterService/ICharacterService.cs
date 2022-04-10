@@ -15,7 +15,7 @@ namespace Rpg_project.Sevices.CharacterService
 
         Task<ServiceResponse<List<GetCharacterDTO>>> GetAll();
 
-        Task<ServiceResponse<GetCharacterDTO>> GetSingle(string name);
+        Task<ServiceResponse<GetCharacterDTO>> GetSingle(int id);
 
         Task<ServiceResponse<List<GetCharacterDTO>>> AddCharacter(AddCharacterDTO new_character);
 

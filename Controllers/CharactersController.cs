@@ -41,15 +41,15 @@ namespace Rpg_project.Controllers
             return Ok(await _characterService.GetAll());
 
         }
-        [AllowAnonymous] // allowing particular API without token
-        [HttpGet("{name}")]  // we specify the route param
+       // [AllowAnonymous] // allowing particular API without token
+        [HttpGet("{id}")]  // we specify the route param
 
 
-        public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> GetSingle(string name)
+        public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> GetSingle(int id)
         {
 
 
-            return Ok(await _characterService.GetSingle(name));
+            return Ok(await _characterService.GetSingle(id));
 
         }
 
