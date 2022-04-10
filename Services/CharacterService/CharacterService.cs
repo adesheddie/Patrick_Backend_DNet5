@@ -10,6 +10,8 @@ using AutoMapper;
 using Rpg_project.Dtos;
 using Rpg_project.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Rpg_project.Sevices.CharacterService
 {
@@ -19,15 +21,19 @@ namespace Rpg_project.Sevices.CharacterService
     {
 
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public DataContext _context { get; }
 
-        public CharacterService(IMapper mapper, DataContext context)
+        public CharacterService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
         }
 
 
+        public int geUserId() => int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         public async Task<ServiceResponse<List<GetCharacterDTO>>> AddCharacter(AddCharacterDTO new_character)
         {
             Characters character = _mapper.Map<Characters>(new_character);
@@ -43,11 +49,11 @@ namespace Rpg_project.Sevices.CharacterService
 
 
 
-        public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll(int userId)
+        public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll()
         {
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            var result = await _context.Characters.Where(c=> c.User.Id == userId).ToListAsync();
+            var result = await _context.Characters.Where(c => c.User.Id == this.geUserId()).ToListAsync();
 
             serviceResponse.Data = result.Select(c => _mapper.Map<GetCharacterDTO>(c)).ToList();
             return serviceResponse;

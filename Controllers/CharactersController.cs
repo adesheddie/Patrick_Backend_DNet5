@@ -38,7 +38,7 @@ namespace Rpg_project.Controllers
         {
             // Note : extract ID from token via claims, here the User is derived from baseController.
             var id = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
-            return Ok(await _characterService.GetAll(id));
+            return Ok(await _characterService.GetAll());
 
         }
         [AllowAnonymous] // allowing particular API without token
