@@ -31,7 +31,7 @@ namespace Rpg_project.Controllers
 
 
             if (result.Success == false)
-                return BadRequest("Invalid Body");
+                return BadRequest(result.Message);
             else
                 return Ok(result);
         }
