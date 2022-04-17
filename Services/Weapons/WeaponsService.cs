@@ -38,7 +38,8 @@ namespace Patrick_Backend_DNet5.Services.Weapons
             try
             {
 
-                var character = await _context.Characters.FirstOrDefaultAsync(x => x.Id == new_weapon.CharacterId && x.User.Id == getUserId());
+                var character = await _context.Characters.
+                FirstOrDefaultAsync(x => x.Id == new_weapon.CharacterId && x.User.Id == getUserId());
                 if (character == null)
                 {
                     serviceResponse.Success = false;

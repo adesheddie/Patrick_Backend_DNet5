@@ -1,3 +1,4 @@
+using Patrick_Backend_DNet5.Dtos.Weapon;
 using Rpg_project.Models;
 
 namespace Rpg_project.Dtos.GetCharacterDTO
@@ -20,6 +21,8 @@ namespace Rpg_project.Dtos.GetCharacterDTO
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
         public Characters Character {get;set;}
+
+        public GetWeaponDTO Weapon {get;set;}
 
 
     }

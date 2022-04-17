@@ -15,7 +15,7 @@ namespace Rpg_project.Models
 
         public Characters Character { get; set; }
 
-        public int CharacterId {get;set;}
+        public int CharacterId {get;set;} // one to one R, using naming convention, <DbSet name><Id>
 
 
     }
