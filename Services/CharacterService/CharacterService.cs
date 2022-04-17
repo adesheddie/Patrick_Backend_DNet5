@@ -12,6 +12,7 @@ using Rpg_project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Patrick_Backend_DNet5.Dtos.Skills;
 
 namespace Rpg_project.Sevices.CharacterService
 {
@@ -97,11 +98,11 @@ namespace Rpg_project.Sevices.CharacterService
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(x => x.Id == updateCharacter.Id);
 
-                if (character !=null && character.User.Id != getUserId())
+                if (character != null && character.User.Id != getUserId())
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid ID";
-                      return serviceResponse;
+                    return serviceResponse;
                 }
 
                 if (character != null)
@@ -109,7 +110,7 @@ namespace Rpg_project.Sevices.CharacterService
 
                     if (!String.IsNullOrEmpty(updateCharacter.Name)) character.Name = updateCharacter.Name;
                     if (!String.IsNullOrEmpty((updateCharacter.Class).ToString())) character.Class = updateCharacter.Class;
-                    if (updateCharacter.Skills != null) character.Skills = updateCharacter.Skills;
+                    if (updateCharacter.Attack != null) character.Attack = updateCharacter.Attack;
                     if (updateCharacter.Defence != null) character.Defence = updateCharacter.Defence;
 
                     await _context.SaveChangesAsync();
@@ -171,6 +172,47 @@ namespace Rpg_project.Sevices.CharacterService
 
 
 
+        }
+
+
+        // adding new skill to an existing character -- M 2 M R
+        public async Task<ServiceResponse<GetCharacterDTO>> AddSkill(AddSkillDTO newSkill)
+        {
+
+
+
+
+            var serviceResponse = new ServiceResponse<GetCharacterDTO>();
+
+            try
+            {
+
+                var character = await _context.Characters.FirstOrDefaultAsync(x => x.Id == newSkill.CharacterId && x.User.Id == getUserId());
+
+                if (character == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid Character ID";
+                }
+
+                var skill = await _context.Skills.FirstOrDefaultAsync(c => c.Id == newSkill.SkillId);
+
+                if (skill == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Invalid Skill ID";
+                }
+                character.Skills.Add(skill);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _mapper.Map<GetCharacterDTO>(character);
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
         }
     }
 

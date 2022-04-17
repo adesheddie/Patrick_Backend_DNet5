@@ -11,6 +11,7 @@ using Rpg_project.Dtos.GetCharacterDTO;
 using Rpg_project.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Patrick_Backend_DNet5.Dtos.Skills;
 
 namespace Rpg_project.Controllers
 {
@@ -41,7 +42,7 @@ namespace Rpg_project.Controllers
             return Ok(await _characterService.GetAll());
 
         }
-       // [AllowAnonymous] // allowing particular API without token
+        // [AllowAnonymous] // allowing particular API without token
         [HttpGet("{id}")]  // we specify the route param
 
 
@@ -87,6 +88,14 @@ namespace Rpg_project.Controllers
 
             return Ok(response);
 
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> AddSkill(AddSkillDTO newSkill)
+        {
+
+            return Ok(await _characterService.AddSkill(newSkill));
         }
 
     }

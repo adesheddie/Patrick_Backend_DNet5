@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Patrick_Backend_DNet5.Models;
+
 namespace Rpg_project.Models
 {
 
@@ -12,13 +15,15 @@ namespace Rpg_project.Models
 
         public int Defence { get; set; } = 10;
 
-        public int Skills { get; set; } = 100;
+        public int Attack { get; set; } = 100;
 
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
         public Users User { get; set; }
 
         public Weapon Weapon {get;set;}
+
+        public List<Skill> Skills {get;set;}
 
     }
 

@@ -3,64 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rpg_project.Data;
 
 namespace Rpg_project.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220417154200_ModifiedCharactersTable")]
+    partial class ModifiedCharactersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
-
-            modelBuilder.Entity("Patrick_Backend_DNet5.Models.Skill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("CharactersId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharactersId");
-
-                    b.ToTable("Skills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Fireball",
-                            Points = 20
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Frenzy",
-                            Points = 30
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Blizzard",
-                            Points = 55
-                        });
-                });
 
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
                 {
@@ -142,13 +101,6 @@ namespace Rpg_project.Migrations
                     b.ToTable("Weapons");
                 });
 
-            modelBuilder.Entity("Patrick_Backend_DNet5.Models.Skill", b =>
-                {
-                    b.HasOne("Rpg_project.Models.Characters", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("CharactersId");
-                });
-
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
                 {
                     b.HasOne("Rpg_project.Models.Users", "User")
@@ -171,8 +123,6 @@ namespace Rpg_project.Migrations
 
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
                 {
-                    b.Navigation("Skills");
-
                     b.Navigation("Weapon");
                 });
 
