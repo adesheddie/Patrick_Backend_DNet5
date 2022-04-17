@@ -22,7 +22,7 @@ namespace Rpg_project.Dtos.GetCharacterDTO
 
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
-        public Characters Character {get;set;}
+        // public Characters Character {get;set;}
 
         public GetWeaponDTO Weapon {get;set;}
 

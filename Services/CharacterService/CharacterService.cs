@@ -71,7 +71,10 @@ namespace Rpg_project.Sevices.CharacterService
         {
             var serviceResponse = new ServiceResponse<GetCharacterDTO>();
 
-            var result = await _context.Characters.FirstOrDefaultAsync(x => x.Id == id && x.User.Id == getUserId());
+            var result = await _context.Characters
+            .Include(x=> x.Weapon)
+            .Include(x=>x.Skills)
+            .FirstOrDefaultAsync(x => x.Id == id && x.User.Id == getUserId());
 
             if (result == null)
             {
