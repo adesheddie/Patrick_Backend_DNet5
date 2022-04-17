@@ -10,7 +10,7 @@ using Rpg_project.Data;
 namespace Rpg_project.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220417154530_ManyToManyR")]
+    [Migration("20220417154835_ManyToManyR")]
     partial class ManyToManyR
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,15 +21,27 @@ namespace Rpg_project.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("CharactersSkill", b =>
+                {
+                    b.Property<int>("CharactersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CharactersId", "SkillsId");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("CharactersSkill");
+                });
+
             modelBuilder.Entity("Patrick_Backend_DNet5.Models.Skill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int?>("CharactersId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -38,8 +50,6 @@ namespace Rpg_project.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CharactersId");
 
                     b.ToTable("Skills");
 
@@ -144,11 +154,19 @@ namespace Rpg_project.Migrations
                     b.ToTable("Weapons");
                 });
 
-            modelBuilder.Entity("Patrick_Backend_DNet5.Models.Skill", b =>
+            modelBuilder.Entity("CharactersSkill", b =>
                 {
                     b.HasOne("Rpg_project.Models.Characters", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("CharactersId");
+                        .WithMany()
+                        .HasForeignKey("CharactersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Patrick_Backend_DNet5.Models.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
@@ -173,8 +191,6 @@ namespace Rpg_project.Migrations
 
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
                 {
-                    b.Navigation("Skills");
-
                     b.Navigation("Weapon");
                 });
 

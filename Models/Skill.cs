@@ -11,7 +11,7 @@ namespace Patrick_Backend_DNet5.Models
 
         public int Points {get;set;}
 
-        // public List<Characters> Characters {get;set;}
+        public List<Characters> Characters {get;set;}
 
 
     }
