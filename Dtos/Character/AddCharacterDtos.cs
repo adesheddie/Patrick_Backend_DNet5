@@ -1,13 +1,12 @@
-using System.Collections.Generic;
-using Patrick_Backend_DNet5.Models;
+using Rpg_project.Models;
 
-namespace Rpg_project.Models
+namespace Rpg_project.Dtos.AddCharacterDtos
 {
 
 
-    public class Characters
-    {
 
+    public class AddCharacterDTO
+    {
 
         public int Id { get; set; }
 
@@ -19,13 +18,6 @@ namespace Rpg_project.Models
 
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
-        public Users User { get; set; }
-
-        public Weapon Weapon {get;set;}
-
-        public List<Skill> Skills {get;set;}
-
     }
-
 
 }

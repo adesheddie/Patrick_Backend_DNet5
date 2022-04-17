@@ -1,15 +1,14 @@
+using System;
 using System.Collections.Generic;
-using Patrick_Backend_DNet5.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using Rpg_project.Models;
 
-namespace Rpg_project.Models
+namespace Rpg_project.Dtos
 {
-
-
-    public class Characters
+    public class UpdateCharacterDTO
     {
-
-
-        public int Id { get; set; }
+           public int Id { get; set; }
 
         public string Name { get; set; } = "Mordor";
 
@@ -19,13 +18,5 @@ namespace Rpg_project.Models
 
         public RpgClass Class { get; set; } = RpgClass.Cleric;
 
-        public Users User { get; set; }
-
-        public Weapon Weapon {get;set;}
-
-        public List<Skill> Skills {get;set;}
-
     }
-
-
 }
