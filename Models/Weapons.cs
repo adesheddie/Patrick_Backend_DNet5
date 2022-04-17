@@ -15,6 +15,8 @@ namespace Rpg_project.Models
 
         public Characters Character { get; set; }
 
+        public int CharacterId {get;set;}
+
 
     }
 

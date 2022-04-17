@@ -18,6 +18,8 @@ namespace Rpg_project.Models
 
         public Users User { get; set; }
 
+        public Weapon Weapon {get;set;}
+
     }
 
 
