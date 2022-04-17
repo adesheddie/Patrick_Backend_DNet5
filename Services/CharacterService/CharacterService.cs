@@ -187,12 +187,16 @@ namespace Rpg_project.Sevices.CharacterService
             try
             {
 
-                var character = await _context.Characters.FirstOrDefaultAsync(x => x.Id == newSkill.CharacterId && x.User.Id == getUserId());
+                var character = await _context.Characters
+                .Include(c=> c.Weapon)
+                .Include(p=> p.Skills)
+                .FirstOrDefaultAsync(x => x.Id == newSkill.CharacterId && x.User.Id == getUserId());
 
                 if (character == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid Character ID";
+                      return serviceResponse;
                 }
 
                 var skill = await _context.Skills.FirstOrDefaultAsync(c => c.Id == newSkill.SkillId);
@@ -201,6 +205,7 @@ namespace Rpg_project.Sevices.CharacterService
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid Skill ID";
+                      return serviceResponse;
                 }
                 character.Skills.Add(skill);
                 await _context.SaveChangesAsync();

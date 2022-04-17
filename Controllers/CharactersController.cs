@@ -91,7 +91,7 @@ namespace Rpg_project.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Skill")]
         public async Task<ActionResult<ServiceResponse<GetCharacterDTO>>> AddSkill(AddSkillDTO newSkill)
         {
 
