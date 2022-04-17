@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.AspNetCore.Http;
+using Patrick_Backend_DNet5.Services.Weapons;
 
 namespace Rpg_project
 {
@@ -54,8 +55,10 @@ namespace Rpg_project
             });
 
             services.AddAutoMapper(typeof(Startup));
+            //  ********************* whenever a new service is created- -- add it here *********************
             services.AddScoped<ICharacterService, CharacterService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IWeaponsService, WeaponsService>();
 
             // below line is for API authentication via tokens
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

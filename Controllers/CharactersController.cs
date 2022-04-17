@@ -37,7 +37,7 @@ namespace Rpg_project.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDTO>>>> Get()
         {
             // Note : extract ID from token via claims, here the User is derived from baseController.
-            var id = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value);
+            // var id = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value); // **************** old way *********************
             return Ok(await _characterService.GetAll());
 
         }

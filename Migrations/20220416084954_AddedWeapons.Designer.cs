@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rpg_project.Data;
 
 namespace Rpg_project.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220416084954_AddedWeapons")]
+    partial class AddedWeapons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,32 +74,6 @@ namespace Rpg_project.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Rpg_project.Models.Weapons", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Damage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharacterId");
-
-                    b.ToTable("Weapons");
-                });
-
             modelBuilder.Entity("Rpg_project.Models.Characters", b =>
                 {
                     b.HasOne("Rpg_project.Models.Users", "User")
@@ -105,15 +81,6 @@ namespace Rpg_project.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Rpg_project.Models.Weapons", b =>
-                {
-                    b.HasOne("Rpg_project.Models.Characters", "Character")
-                        .WithMany()
-                        .HasForeignKey("CharacterId");
-
-                    b.Navigation("Character");
                 });
 
             modelBuilder.Entity("Rpg_project.Models.Users", b =>

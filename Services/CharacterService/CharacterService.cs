@@ -97,7 +97,7 @@ namespace Rpg_project.Sevices.CharacterService
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(x => x.Id == updateCharacter.Id);
 
-                if (character.User.Id != getUserId())
+                if (character !=null && character.User.Id != getUserId())
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Invalid ID";

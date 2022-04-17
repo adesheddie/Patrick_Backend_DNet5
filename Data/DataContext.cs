@@ -18,5 +18,7 @@ namespace Rpg_project.Data
 
         public DbSet<Users> Users {get; set;}
 
+        public DbSet<Weapon> Weapons {get;set;}
+
     }
 }
